@@ -25,7 +25,7 @@ const Header = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <a href="/" className="text-xl font-bold text-blue-600">
-                MyLogo
+                Your logo
               </a>
             </div>
 
