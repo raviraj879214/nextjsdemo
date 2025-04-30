@@ -8,7 +8,7 @@ function CategoryTable({ refreshFlag }) {
 
   const fetchcategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/get-category");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-category`);
       const data = await response.json();
       SetCategoryData([...data]);
     } catch (error) {
@@ -23,7 +23,7 @@ function CategoryTable({ refreshFlag }) {
 
   const deletecategory = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/delete-categories/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/delete-categories/${id}`, {
         method: 'DELETE'
       });
       const result = await response.json();

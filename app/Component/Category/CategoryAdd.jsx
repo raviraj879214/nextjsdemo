@@ -23,7 +23,8 @@ function CategoryAdd({ id }) {
       Categoryname: data.CategoryName,
       CatURL: data.CategoryURL
     };
-    const response = await fetch("http://localhost:5000/api/create-product",{
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/create-product`,{
       method : "POST",
       headers : { "Content-Type": "application/json"},
       body: JSON.stringify(payload)

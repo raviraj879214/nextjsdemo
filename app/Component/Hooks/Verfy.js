@@ -15,7 +15,7 @@ const handleVerify = async (token) => {
   console.log("handle verify token : " + token );
 
   try {
-    const response = await fetch('http://localhost:5000/api/verify-token', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/verify-token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
