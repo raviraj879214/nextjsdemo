@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation";
-import Category from "../../Component/Category/Category";
+import Category from "../../../Component/Category/Category";
 
 
 
@@ -10,9 +10,8 @@ function PageCategory(){
 
     return(<>
 
-            {id}
-
-        <Category></Category>
+           
+        <Category id={id} />
 
 
     

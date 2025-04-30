@@ -1,10 +1,22 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
+
+
+
+
+
 function CategoryTable({ refreshFlag }) {
+
+
+
   const [categorydata, SetCategoryData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Adjust as needed
+
+ 
+
 
   const fetchcategories = async () => {
     try {
@@ -66,7 +78,9 @@ function CategoryTable({ refreshFlag }) {
               <td className="py-3 px-4 border-b">{cat.Categoryname}</td>
               <td className="py-3 px-4 border-b">{cat.CatURL}</td>
               <td className="py-3 px-4 border-b space-x-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
+                
+
+                <Link href={"/manage-category/" + cat._id} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</Link>
                 <button
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   onClick={() => deletecategory(cat._id)}

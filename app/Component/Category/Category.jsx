@@ -7,7 +7,7 @@ import CategoryAdd from "../Category/CategoryAdd";
 
 
 
-function Category(){
+function Category({id}){
 
 
 
@@ -19,7 +19,7 @@ function Category(){
             <Sidebar />
         </aside>
         <main className="flex-1 bg-gray-100 p-6">
-            <CategoryAdd></CategoryAdd>
+            <CategoryAdd id={id}></CategoryAdd>
         </main>
         </div>
 
