@@ -34,7 +34,7 @@ const Layout=({children})=>{
              handleVerify(tokens)
          }
  
-     },[tokens, setTokens, handleVerify])
+     },[tokens, setTokens, handleVerify,router])
     return(
         <div>
             {children}
