@@ -5,22 +5,22 @@ import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 import Sidebar from '../Sidebar';
 import { green, red } from '@mui/material/colors';
+import { useRouter } from 'next/navigation';
 
-export default function AddProduct() {
+export default function UpdateProduct({id}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset,
   } = useForm();
-
-
+  const router = useRouter();
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [categories,SetCategories] = useState([]);
   const [prodmsg,SetProdMessage] = useState("");
  
-
   const fetchcategories=async ()=>{
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-category`, {
         method: "GET",
@@ -30,12 +30,16 @@ export default function AddProduct() {
       });
       const data = await response.json();
       SetCategories(data);
+
+
+      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-product-id/${id}`);
+      const product = await productResponse.json();
+      setValue("categoryId", product.categoryId);
   }
 
   useEffect(()=>{
     fetchcategories();
   },[]);
-
 
   const onDrop = useCallback((acceptedFiles) => {
     const newPreviews = acceptedFiles.map(file => URL.createObjectURL(file));
@@ -65,14 +69,60 @@ export default function AddProduct() {
 
 
 
+  const fetchProductById = async (id) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-product-id/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        console.log("Fetched product:", result);
+
+        setValue("name", result.name);
+        setValue("description", result.description);
+        setValue("price", result.price);
+        setValue("stock", result.stock);
+        setValue("categoryId", result.categoryId);
+
+        console.log(`${process.env.NEXT_PUBLIC_APP_URL}${result.imageUrl}`);
+        setImagePreviews([`${process.env.NEXT_PUBLIC_APP_URL}${result.imageUrl}`]);
+        
+        return result; // return the data if needed
+      } else {
+        console.log("Error fetching product:", result.message || result);
+      }
+    } catch (error) {
+      console.log("Fetch failed:", error.message);
+    }
+  };
+  
+
+      useEffect(()=>{
+        fetchProductById(id);
+      },[]);
+
+
+
+
+
+
   const onSubmit = async (data) => {
     debugger;
-    if (imageFiles.length === 0) {
+    
+
+    if (imagePreviews.length === 0) {
       alert('Please upload at least one image.');
       return;
     }
 
+
     const formData = new FormData();
+    formData.append('id',id);
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', parseFloat(data.price));
@@ -82,25 +132,26 @@ export default function AddProduct() {
     imageFiles.forEach(file => {
       formData.append('images', file);
     });
-
+    
     try {
      
       console.log('Submitting Product:', formData);
 
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/create-products`, {
-        method: "POST",
-       
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/update-product`, {
+        method: "PUT",
         body: (formData)
       });
       
       const data = await response.json();
     
-      SetProdMessage("Product created successfully!");
+      SetProdMessage("Product updated successfully!");
       
+
       reset();
       setImageFiles([]);
       setImagePreviews([]);
+      router.push("/manage-product");
     } catch (err) {
       console.error(err);
       alert('Error creating product.');
@@ -119,7 +170,7 @@ export default function AddProduct() {
             className="bg-white w-full max-w-2xl p-8 rounded-2xl shadow-lg space-y-6"
           >
             <p style={{color:green}}>{prodmsg}</p>
-            <h2 className="text-2xl font-bold text-gray-800">Create New Product</h2>
+            <h2 className="text-2xl font-bold text-gray-800">Update  Product </h2>
 
             <div>
               <label className="block mb-1 font-medium text-gray-700">Name</label>
@@ -227,7 +278,7 @@ export default function AddProduct() {
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
             >
-              Create Product
+              Update Product
             </button>
           </form>
         </div>

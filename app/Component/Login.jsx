@@ -38,7 +38,7 @@ export default function Login() {
        setTokens(result.token);
   
       if (response.ok) {
-       return router.push("/user-dashboard");
+       return window.location.href="/user-dashboard";
       } else {
         // Handle error
         console.error("Login failed:", result.message);

@@ -3,10 +3,20 @@ import Link from "next/link";
 import { ShoppingCartIcon } from '@heroicons/react/outline'; // Import Cart Icon
 import Cardslider from "./Cardslider";
 import { useState } from "react";
+import Rolename from "./Hooks/Rolename";
+import { useSignout } from "./Hooks/useSignout";
+
+
+
+
 
 const Header = () => {
   const [cartItemCount, setCartItemCount] = useState(3); // Cart count (can be dynamic)
   const [cartslide, setCartSlide] = useState(false); // State to show/hide the cart slider
+
+  const rolename = Rolename();
+  const signout = useSignout();
+
 
   // Cart click function
   const Cartfunction = () => {
@@ -35,7 +45,10 @@ const Header = () => {
               <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
               
               <Link href={"/contactus"} className="text-gray-700 hover:text-blue-600" >Contact</Link>
-              <Link href={"/login"} className="text-gray-700 hover:text-blue-600" >Login</Link>
+             
+              {rolename != "" ?  <a className="text-gray-700 hover:text-blue-600" onClick={signout}>Logout</a> :   <Link href={"/login"} className="text-gray-700 hover:text-blue-600" >Login</Link>}
+
+
               <a onClick={Cartfunction} className="text-gray-700 hover:text-blue-600 cursor-pointer">
                 Cart ({cartItemCount})
               </a>

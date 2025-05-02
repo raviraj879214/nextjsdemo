@@ -59,10 +59,6 @@ const handleVerify = async (token) => {
 
 
 
-
-
-
-
    
     return {handleVerify};
 }

@@ -1,70 +1,66 @@
 "use client"
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 
-const products = [
-  {
-    id: 1,
-    name: 'Earthen Bottle',
-    href: '/product-details',
-    price: '$48',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-  },
-  {
-    id: 2,
-    name: 'Nomad Tumbler',
-    href: '/product-details',
-    price: '$35',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-  },
-  {
-    id: 3,
-    name: 'Focus Paper Refill',
-    href: '/product-details',
-    price: '$89',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-  },
-  {
-    id: 4,
-    name: 'Machined Mechanical Pencil',
-    href: '/product-details',
-    price: '$35',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  // More products...
-]
-  
-const  ProductHome=()=>{
+
+const ProductHome = () => {
+  const [products, setProductData] = useState([]);
+
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-products`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+      console.log("Product home", result);
+
+      if (response.ok) {
+        setProductData(result);
+      } else {
+        console.error("Error fetching products:", result.message);
+      }
+    } catch (error) {
+      console.error("Fetch failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
   return (
-<>
-
-<div className="bg-white">
+    <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <a key={product.id} href={product.href} className="group">
-              <img
-                alt={product.imageAlt}
-                src={product.imageSrc}
-                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
-              />
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
-            </a>
-          ))}
-        </div>
+        {/* Fallback UI if no products */}
+        {products.length === 0 ? (
+          <p className="text-center text-gray-500">No products available.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            {products.map((product) => (
+              <Link key={product._id} href={"/product-details"} className="group">
+                <img
+                 
+                  src={`${process.env.NEXT_PUBLIC_APP_URL}${product.imageUrl}`}
+
+                  className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
+                />
+                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+                <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
-  
-
-
-  </>);
-}
+  );
+};
 
 export default ProductHome;
