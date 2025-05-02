@@ -21,12 +21,20 @@ const ProductHome = () => {
       console.log("Product home", result);
 
       if (response.ok) {
-        setProductData(result);
+        console.log("products : " + result);
+        if (Array.isArray(result)) {
+          setProductData(result);
+        } else if (Array.isArray(result?.data)) {
+          setProductData(result.data);
+        } else {
+          console.error("Unexpected response format:", result);
+          setProductData([]); // fallback
+        }
       } else {
-        console.error("Error fetching products:", result.message);
+        console.log("Error fetching products:", result.message);
       }
     } catch (error) {
-      console.error("Fetch failed:", error);
+      console.log("Fetch failed:", error);
     }
   };
 
@@ -44,7 +52,7 @@ const ProductHome = () => {
           <p className="text-center text-gray-500">No products available.</p>
         ) : (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
+            {products?.map((product) => (
               <Link key={product._id} href={"/product-details"} className="group">
                 <img
                  
