@@ -9,8 +9,6 @@ tokens :null,
 role : null,
 setTokens:((tokens)=>set({tokens})),
 setRole:((role)=>set({role}))
-
-
 }))
 
 export default userToken

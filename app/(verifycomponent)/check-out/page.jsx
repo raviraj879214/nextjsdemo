@@ -1,4 +1,4 @@
-import Checkout from "../Component/Checkout";
+import Checkout from "../../Component/Checkout";
 
 
 

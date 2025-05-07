@@ -1,12 +1,27 @@
 "use client"
 import { useRouter } from "next/navigation";
 import userToken from "../store/userToken";
-
+import { useEffect, useState } from "react";
+import useUserIDStore from "../store/userIDSet";
 
 
 function Verify(){
 const router = useRouter();
 const {setRole}= userToken();
+const {setUserID} = useUserIDStore();
+
+
+
+    const fetchuserid = ()=>{
+      const userid = localStorage.getItem("UserID");
+      setUserID(userid);
+    }
+
+    useEffect(()=>{
+      fetchuserid();
+    },[]);
+
+
 
 
 
@@ -33,12 +48,15 @@ const handleVerify = async (token) => {
         console.log('👤 User info:', data.user);
         console.log('Role anme', data.user.role);
         localStorage.setItem("Rolename",data.user.role);
-
+        localStorage.setItem("UserID",data.user.id);
 
         // console.log('Role Global', role);
         const userId = data.user.id;
         const userName = data.user.name;
         const userEmail = data.user.email;
+
+        
+
 
         // router.push("/user-dashboard");
 

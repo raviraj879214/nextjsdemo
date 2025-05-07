@@ -1,31 +1,21 @@
 "use client";
 import Link from "next/link";
 import { ShoppingCartIcon } from '@heroicons/react/outline'; // Import Cart Icon
-import Cardslider from "./Cardslider";
+import CartSlider from "./Cardslider";
 import { useState } from "react";
 import Rolename from "./Hooks/Rolename";
 import { useSignout } from "./Hooks/useSignout";
-
-
-
-
+import { useCart } from "./Context/CartContext";
 
 const Header = () => {
-  const [cartItemCount, setCartItemCount] = useState(3); // Cart count (can be dynamic)
   const [cartslide, setCartSlide] = useState(false); // State to show/hide the cart slider
-
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State to control dropdown visibility
+  const { Cartfunction, cartItemCount } = useCart();
   const rolename = Rolename();
   const signout = useSignout();
 
-
-  // Cart click function
-  const Cartfunction = () => {
-    setCartSlide(true); // Show the cart slide
-  };
-
-  // Close cart function
-  const closeCart = () => {
-    setCartSlide(false); // Hide the cart slide
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
@@ -39,18 +29,47 @@ const Header = () => {
               </a>
             </div>
 
-            <nav className="hidden md:flex space-x-6">
+            <nav className="hidden md:flex space-x-6 relative"> {/* Add relative positioning */}
               <a href="/" className="text-gray-700 hover:text-blue-600">Home</a>
               <a href="#" className="text-gray-700 hover:text-blue-600">About</a>
               <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
-              
-              <Link href={"/contactus"} className="text-gray-700 hover:text-blue-600" >Contact</Link>
-             
-              {rolename != "" ?  <a className="text-gray-700 hover:text-blue-600" onClick={signout}>Logout</a> :   <Link href={"/login"} className="text-gray-700 hover:text-blue-600" >Login</Link>}
+              <Link href={"/contactus"} className="text-gray-700 hover:text-blue-600">Contact</Link>
 
+              {rolename !== "" ? (
+                <div className="relative">
+                  {/* User Profile Image */}
+                  <button onClick={toggleDropdown} className="flex items-center space-x-2">
+                    {/* Replace with the user's profile image */}
+                    <img 
+                      src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"  // Replace this path with the actual image path
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full border-2 border-gray-300" // Rounded circle
+                    />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                      <ul className="py-2">
+                        <li>
+                          <Link href="/user-dashboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</Link>
+                        </li>
+                        <li>
+                          <Link href="/order-details" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Orders</Link>
+                        </li>
+                        <li>
+                          <a onClick={signout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">Sign Out</a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link href={"/login"} className="text-gray-700 hover:text-blue-600">Login</Link>
+              )}
 
               <a onClick={Cartfunction} className="text-gray-700 hover:text-blue-600 cursor-pointer">
-                Cart ({cartItemCount})
+                Cart 
               </a>
             </nav>
 
@@ -67,8 +86,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Conditionally render the Cardslider and pass props */}
-      <Cardslider isOpen={cartslide} closeCart={closeCart} />
+      <CartSlider />
     </>
   );
 };

@@ -6,7 +6,6 @@ import {useSignout} from "./Hooks/useSignout";
 
 
 
-
 function Sidebar(){
 const rolenameeee = Rolename();
 const signout = useSignout();
@@ -39,19 +38,13 @@ const signout = useSignout();
             </>
         ) : (
           <>
-            <li><a href="#" className="block py-2 px-4 hover:bg-indigo-600">User Home</a></li>
-            <li><a href="#" className="block py-2 px-4 hover:bg-indigo-600">User Profile</a></li>
-            <li><a href="#" className="block py-2 px-4 hover:bg-indigo-600">User Settings</a></li>
+            <li><Link href="/order-details" className="block py-2 px-4 hover:bg-indigo-600">Order Details</Link></li>
             <li><a  className="block py-2 px-4 hover:bg-indigo-600" onClick={signout} >Logout</a></li>
           </>
         )}
         </ul>
       </div>
-
-    
     </div>
-
-
 
     </>);
 }

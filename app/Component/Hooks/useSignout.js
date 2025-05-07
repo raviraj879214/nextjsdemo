@@ -10,6 +10,7 @@ export function useSignout() {
     alert("Signing out...");
     localStorage.setItem("token","");
     localStorage.setItem("Rolename","");
+    localStorage.setItem("UserID","");
     // router.push("/");
     window.location.href = "/";
   };

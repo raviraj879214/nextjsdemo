@@ -72,12 +72,22 @@ export default function AddProduct() {
       return;
     }
 
+    const slugify = (name) =>
+      name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '') // remove special chars
+        .replace(/\s+/g, '-')         // replace spaces with -
+    
+    const productUrl = slugify(data.name)
+
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', parseFloat(data.price));
     formData.append('stock', parseInt(data.stock, 10));
     formData.append('categoryId', data.categoryId);
+    formData.append('ProductUrl',productUrl);
 
     imageFiles.forEach(file => {
       formData.append('images', file);
