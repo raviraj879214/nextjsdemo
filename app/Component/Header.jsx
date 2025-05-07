@@ -35,7 +35,7 @@ const Header = () => {
               <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
               <Link href={"/contactus"} className="text-gray-700 hover:text-blue-600">Contact</Link>
 
-              {rolename ? (
+              {rolename != ""  ? (
                 <div className="relative">
                   {/* User Profile Image */}
                   <button onClick={toggleDropdown} className="flex items-center space-x-2">
