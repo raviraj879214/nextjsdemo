@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ShoppingCartIcon } from '@heroicons/react/outline'; // Import Cart Icon
 import CartSlider from "./Cardslider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Rolename from "./Hooks/Rolename";
 import { useSignout } from "./Hooks/useSignout";
 import { useCart } from "./Context/CartContext";
@@ -11,8 +11,24 @@ const Header = () => {
   const [cartslide, setCartSlide] = useState(false); // State to show/hide the cart slider
   const [dropdownOpen, setDropdownOpen] = useState(false); // State to control dropdown visibility
   const { Cartfunction, cartItemCount } = useCart();
-  const rolename = Rolename();
+
   const signout = useSignout();
+
+  const [signin,SetSignin] = useState(false);
+
+
+  useEffect(()=>{
+    if(typeof window !== undefined){
+      const  token = localStorage.getItem("token");
+      if(token != ""){
+        SetSignin(true);
+      }
+      else{
+        SetSignin(false);
+      }
+    }
+
+  },[]);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -35,7 +51,7 @@ const Header = () => {
               <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
               <Link href={"/contactus"} className="text-gray-700 hover:text-blue-600">Contact</Link>
 
-              {rolename != ""  ? (
+              {signin  ? (
                 <div className="relative">
                   {/* User Profile Image */}
                   <button onClick={toggleDropdown} className="flex items-center space-x-2">
