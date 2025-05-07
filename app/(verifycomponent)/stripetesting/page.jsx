@@ -8,7 +8,7 @@ function page(){
 return(
     <>
     
-     <Test></Test>
+     {/* <Test data={10} UserID = {10} ></Test> */}
     </>
 )
 }
